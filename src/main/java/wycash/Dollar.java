@@ -1,13 +1,13 @@
 package wycash;
 
-public class Dollar extends Money{
+public class Dollar extends Money {
 
-    public Dollar(int amount) {
-        super(amount);
+    public Dollar(int amount, String currency) {
+        super(amount, currency);
     }
 
-    public Dollar times(int multiplayer) {
-        return new Dollar(amount * multiplayer);
+    @Override
+    public Money times(int multiplayer){
+        return new Dollar(amount * multiplayer, currency);
     }
-    
 }

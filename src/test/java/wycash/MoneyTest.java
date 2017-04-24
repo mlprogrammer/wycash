@@ -1,31 +1,31 @@
 package wycash;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import org.junit.Test;
 
 public class MoneyTest {
 
     @Test
-    public void testDolarEquality(){
-        Dollar five = new Dollar(5);
-        Assert.assertEquals(new Dollar(10), five.times(2));
-        Assert.assertEquals(new Dollar(15), five.times(3));
-        Assert.assertNotEquals(new Dollar(6), five.times(2));
-        Assert.assertNotEquals(new Dollar(10), new Franc(10));
+    public void testEquality(){
+        assertEquals(Money.dollar(5, "USD"), Money.dollar(5, "USD"));
+        assertNotEquals(Money.dollar(6, "USD"), Money.dollar(5, "USD"));
+        assertEquals(Money.franc(5, "CHF"), Money.franc(5, "CHF"));
+        assertNotEquals(Money.franc(6, "CHF"), Money.franc(5, "CHF"));
     }
     
     @Test
-    public void testFrancEquality(){
-        Franc five = new Franc(5);
-        Assert.assertEquals(new Franc(10), five.times(2));
-        Assert.assertEquals(new Franc(15), five.times(3));
-        Assert.assertNotEquals(new Franc(6), five.times(2));
+    public void testFrancMultiplication(){
+        Money five = Money.franc(5, "CHF");
+        assertEquals(Money.franc(10, "CHF"), five.times(2));
+        assertEquals(Money.franc(15, "CHF"), five.times(3));
     }
     
     @Test
-    public void testMultiplication(){
-        Money five = Money.dollar(5);
-        Assert.assertEquals(new Dollar(5), five);
+    public void testCurrency(){
+        assertEquals("USD", Money.dollar(1, "USD").currency());
+        assertEquals("CHF", Money.franc(1, "CHF").currency());
     }
     
 }

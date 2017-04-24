@@ -1,12 +1,14 @@
 package wycash;
 
-public class Franc extends Money{
+public class Franc extends Money {
 
-    public Franc(int amount) {
-        super(amount);
+    public Franc(int amount, String currency) {
+        super(amount, currency);
     }
 
-    public Franc times(int multiplayer) {
-        return new Franc(amount * multiplayer);
+    @Override
+    public Money times(int multiplayer) {
+        return new Money(amount * multiplayer, currency);
     }
+
 }
