@@ -3,6 +3,7 @@ package wycash;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MoneyTest {
@@ -39,6 +40,7 @@ public class MoneyTest {
         assertEquals(Money.dollar(10), reduced);
     }
 
+    @Ignore
     @Test
     public void testPlusReturnsSum() {
         Money five = Money.dollar(5);
@@ -50,10 +52,35 @@ public class MoneyTest {
 
     @Test
     public void testReduceSum() {
-        Expression sum = new Sum(Money.dollar(3), Money.dollar(4));
+        Expression exp = new Sum(Money.dollar(3), Money.dollar(4));
         Bank bank = new Bank();
-        Money result = bank.reduce(sum, "USD");
+        Money result = bank.reduce(exp, "USD");
         assertEquals(Money.dollar(7), result);
+    }
+
+    @Test
+    public void testReduceMoneyDifferentCurrency() {
+        Bank bank = new Bank();
+        bank.addRate("CHF", "USD", 2);
+        Money result = bank.reduce(Money.franc(2), "USD");
+        assertEquals(Money.dollar(1), result);
+    }
+
+    @Test
+    public void testIdentityRate() {
+        Bank bank = new Bank();
+        bank.addRate("CHF", "USD", 2);
+        assertEquals(1, bank.rate("USD", "USD"));
+    }
+
+    @Test
+    public void testMixedAddition() {
+        Expression fiveBucks = Money.dollar(5);
+        Expression tenFrancs = Money.franc(10);
+        Bank bank = new Bank();
+        bank.addRate("CHF", "USD", 2);
+        Money result = bank.reduce(fiveBucks.plus(tenFrancs), "USD");
+        assertEquals(Money.dollar(10), result);
     }
 
 }
